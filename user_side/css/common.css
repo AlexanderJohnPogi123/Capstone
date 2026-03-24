@@ -1,0 +1,326 @@
+/* =========================
+   GENERAL STYLES
+========================= */
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+}
+
+/* =========================
+   TOP CONTACT
+========================= */
+.top-contact {
+    color: #333;
+    font-size: 0.85rem;
+    padding: 5px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1050;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.top-contact.hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.top-contact .social-icons a {
+    margin-left: 15px;
+    color: #333;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+    position: fixed;
+    top: 30px;
+    width: 100%;
+    z-index: 1040;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: top 0.5s ease, background 0.5s ease, box-shadow 0.5s ease;
+}
+
+.navbar.scrolled {
+    top: 0;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.navbar .nav-link {
+    margin-left: 25px;
+    color: #101235;
+    font-weight: 500;
+}
+
+.navbar .navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #bfa158;
+    text-decoration: none;
+}
+
+.navbar .nav-link:hover {
+    text-decoration: underline;
+    color: #bfa158;
+}
+
+/* Reserve Button */
+.navbar .btn-reserve {
+    background: #bfa158;
+    border: 1px solid transparent;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 400;
+    transition: background 0.3s ease, color 0.3s ease, border 0.3s ease, transform 0.3s ease;
+    
+}
+
+.navbar .btn-reserve:hover {
+    background: inherit;
+    backdrop-filter: inherit;
+    -webkit-backdrop-filter: inherit;
+    border: 1px solid #bfa158;
+    color: #bfa158;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+    background-color: #bfa158; /* full width */
+    color: #fff;
+    width: 100%;       /* ensure spans entire viewport */
+    padding-top: 40px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.footer .container {
+    max-width: 1200px; /* content stays aligned like main page */
+    margin: 0 auto;    /* center container */
+    padding-left: 15px; /* optional, aligns with bootstrap grid */
+    padding-right: 15px;
+}
+
+.footer .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.footer-logo-text {
+    font-size: 4rem;                /* big and bold */
+    font-weight: 900;               /* extra bold */
+    color: #bfa158;                 /* gold color */
+    font-family: Garamond, serif;
+    text-align: center;             /* center horizontally */
+    margin: 0 auto;                 /* center block */
+    display: block;
+    text-shadow: 1px 1px 2px rgb(255, 255, 255); /* subtle shadow for contrast */
+}
+
+.footer h6 {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #fdd07b;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: UNDERLINE;
+}
+
+.footer-logo {
+    width: 140px;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+
+.footer-divider {
+    width: 50px;
+    height: 2px;
+    background-color: #fff;
+    border: none;
+    margin: 10px auto 15px auto;
+}
+
+.footer-about-text {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.footer-contact span {
+    font-size: 14px;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.footer-contact i {
+    margin-right: 5px;
+}
+
+.footer-social a {
+    color: #fff;
+    margin: 0 8px;
+    font-size: 20px;
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    transition: all 0.3s ease;
+}
+
+.footer-social a:hover {
+    background-color: #fff;
+    color: #bfa158;
+    transform: scale(1.8) rotate(10deg);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.back-to-top {
+    color: #fff;
+    text-decoration: none;
+    font-weight: normal;
+    transition: color 0.3s;
+}
+
+.back-to-top:hover {
+    text-decoration: underline;
+}
+
+.back-to-top .arrow {
+    display: inline-block;
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+}
+
+.back-to-top:hover .arrow {
+    transform: rotate(-90deg);
+}
+
+/* Chat bubble */
+#chat-bubble {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: #bfa158;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 2000;
+    transition: transform 0.3s ease;
+}
+
+#chat-bubble:hover {
+    transform: scale(1.1);
+}
+
+#chat-window {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 2000;
+    border: 1px solid #ddd;
+}
+
+.chat-header {
+    background: #bfa158;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #fdfdfb;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.msg {
+    padding: 10px 14px;
+    border-radius: 12px;
+    max-width: 80%;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.msg-user {
+    align-self: flex-end;
+    background: #bfa158;
+    color: white;
+    border-bottom-right-radius: 2px;
+}
+
+.msg-bot {
+    align-self: flex-start;
+    background: #f1f1f1;
+    color: #333;
+    border-bottom-left-radius: 2px;
+}
+
+.chat-input-area {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    background: white;
+}
+
+.chat-input-area input {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.chat-input-area button {
+    background: none;
+    border: none;
+    color: #bfa158;
+    font-size: 1.4rem;
+    margin-left: 10px;
+    cursor: pointer;
+}
