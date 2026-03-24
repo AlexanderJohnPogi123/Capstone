@@ -1,33 +1,56 @@
 <?php
 /*
 ------------------------------------
+LOAD ENV (OPTIONAL BUT RECOMMENDED)
+------------------------------------
+If you use a .env file, uncomment this
+------------------------------------
+*/
+// require_once __DIR__ . '/vendor/autoload.php';
+// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+// $dotenv->load();
+
+
+/*
+------------------------------------
 DATABASE SETTINGS
 ------------------------------------
-Change these if your database info changes
+Use environment variables if available
+------------------------------------
 */
 
-$DB_HOST = "localhost";
-$DB_USER = "root";
-$DB_PASS = "";
-$DB_NAME = "secure_app";
+$DB_HOST = $_ENV['DB_HOST'] ?? "localhost";
+$DB_USER = $_ENV['DB_USER'] ?? "app_user"; // NOT root
+$DB_PASS = $_ENV['DB_PASS'] ?? "ITPH2026";
+$DB_NAME = $_ENV['DB_NAME'] ?? "secure_app";
+
 
 /*
 ------------------------------------
 ENCRYPTION KEY
 ------------------------------------
-Use the SAME key everywhere when
-encrypting and decrypting data
+MUST be 32 characters for AES-256
+------------------------------------
 */
 
-$ENCRYPTION_KEY = "SOME_RANDOM_SECRET_KEY_32CHARS";
+$ENCRYPTION_KEY = $_ENV['ENCRYPTION_KEY'] ?? "CHANGE_THIS_TO_A_SECURE_32_CHAR_KEY!";
+
+
+/*
+------------------------------------
+API KEY (HIDE THIS IN .ENV)
+------------------------------------
+*/
+
+$api_key = $_ENV['API_KEY'] ?? "HIDE_THIS_IN_ENV";
 
 
 /*
 ------------------------------------
 DATABASE CONNECTION FUNCTION
 ------------------------------------
-This function connects to MySQL
-and returns the connection object
+Zero Trust: No info leakage
+------------------------------------
 */
 
 function get_db_connection(){
@@ -36,8 +59,9 @@ function get_db_connection(){
 
     $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 
-    if($conn->connect_error){
-        die("Database Connection Failed: " . $conn->connect_error);
+    if ($conn->connect_error) {
+        error_log("Database Error: " . $conn->connect_error);
+        die("Something went wrong. Please try again later.");
     }
 
     return $conn;
@@ -46,10 +70,10 @@ function get_db_connection(){
 
 /*
 ------------------------------------
-ENCRYPT DATA FUNCTION
+ENCRYPT DATA FUNCTION (SECURE)
 ------------------------------------
-Used when saving sensitive data
-to the database
+Uses RANDOM IV (Zero Trust)
+------------------------------------
 */
 
 function encrypt_data($data){
@@ -67,21 +91,82 @@ function decrypt_data($data){
     $decoded = base64_decode($data);
     return openssl_decrypt($decoded, $cipher, $ENCRYPTION_KEY, OPENSSL_RAW_DATA, $iv);
 }
+
 /*
 ------------------------------------
-INPUT SANITIZATION FUNCTION
+INPUT SANITIZATION
 ------------------------------------
-Removes extra spaces and prevents
-HTML injection
+Zero Trust: Never trust input
+------------------------------------
 */
 
 function sanitize_input($input){
 
+    if (!isset($input)) return '';
+
     $input = trim($input);
+    $input = strip_tags($input); // remove HTML
     $input = htmlspecialchars($input, ENT_QUOTES, "UTF-8");
 
     return $input;
 }
-$api_key = 'AIzaSyA40_rMg2RsLaSMzbjFnCl8gKY_5XWCiVA';
 
-?>
+
+/*
+------------------------------------
+LOGGING FUNCTION
+------------------------------------
+Zero Trust: Monitor everything
+------------------------------------
+*/
+
+function log_event($message){
+
+    $log_file = __DIR__ . "/security.log";
+    $time = date("Y-m-d H:i:s");
+
+    file_put_contents(
+        $log_file,
+        "[$time] $message" . PHP_EOL,
+        FILE_APPEND
+    );
+}
+
+
+/*
+------------------------------------
+OPTIONAL: RATE LIMIT (BASIC)
+------------------------------------
+Prevent spam / abuse
+------------------------------------
+*/
+
+function rate_limit($key, $limit = 5, $seconds = 60){
+
+    session_start();
+
+    if (!isset($_SESSION['rate_limit'][$key])) {
+        $_SESSION['rate_limit'][$key] = [
+            'count' => 1,
+            'time' => time()
+        ];
+        return true;
+    }
+
+    $data = $_SESSION['rate_limit'][$key];
+
+    if (time() - $data['time'] > $seconds) {
+        $_SESSION['rate_limit'][$key] = [
+            'count' => 1,
+            'time' => time()
+        ];
+        return true;
+    }
+
+    if ($data['count'] >= $limit) {
+        return false;
+    }
+
+    $_SESSION['rate_limit'][$key]['count']++;
+    return true;
+}
